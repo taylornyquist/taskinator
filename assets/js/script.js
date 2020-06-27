@@ -58,6 +58,8 @@ var completeEditTask = function (taskName, taskType, taskId) {
             tasks[i].type = taskType;
         }
     };
+    // calls the saveTasks function to store the tasks array to local storage
+    saveTasks();
 
     alert("Task Updated!");
 
@@ -97,6 +99,9 @@ var createTaskEl = function (taskDataObj) {
     taskDataObj.id = taskIdCounter;
 
     tasks.push(taskDataObj);
+
+    // calls the saveTasks function to store the tasks array to local storage
+    saveTasks();
 
     // increase task counter for next unique id
     taskIdCounter++;
@@ -189,6 +194,9 @@ var deleteTask = function (taskId) {
     // reassign tasks array to be the same as updatedTaskArr
     tasks = updatedTaskArr;
 
+    // calls the saveTasks function to store the tasks array to local storage
+    saveTasks();
+
 };
 
 // function that edits the task
@@ -240,6 +248,9 @@ var taskStatusChangeHandler = function (event) {
 
     console.log(tasks);
 
+    // calls the saveTasks function to store the tasks array to local storage
+    saveTasks();
+
 };
 
 // function for dragging tasks to different columns
@@ -286,7 +297,10 @@ var dropTaskHandler = function (event) {
         if (tasks[i].id === parseInt(id)) {
             tasks[i].status = statusSelectEl.value.toLowerCase();
         }
-    }
+    };
+
+    // calls the saveTasks function to store the tasks array to local storage
+    saveTasks();
 
     console.log(tasks);
 
@@ -297,7 +311,14 @@ var dragLeaveHandler = function (event) {
     if (taskListEl) {
         taskListEl.removeAttribute("style");
     }
-}
+};
+
+// function for saving tasks in local storage
+var saveTasks = function () {
+
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+};
 
 
 
