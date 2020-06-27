@@ -70,8 +70,8 @@ var completeEditTask = function (taskName, taskType, taskId) {
 // Create Task Function
 var createTaskEl = function (taskDataObj) {
 
-    console.log(taskDataObj);
-    console.log(taskDataObj.status);
+    // console.log(taskDataObj);
+    // console.log(taskDataObj.status);
 
     // create list item
     var listItemEl = document.createElement("li");
@@ -95,7 +95,7 @@ var createTaskEl = function (taskDataObj) {
     // add entire list item to list
     tasksToDoEl.appendChild(listItemEl);
 
-    // is this the right spot? Adding taskIdCounter to the object
+    //Adding taskIdCounter to the object
     taskDataObj.id = taskIdCounter;
 
     tasks.push(taskDataObj);
@@ -246,7 +246,7 @@ var taskStatusChangeHandler = function (event) {
         }
     };
 
-    console.log(tasks);
+    // console.log(tasks);
 
     // calls the saveTasks function to store the tasks array to local storage
     saveTasks();
@@ -259,7 +259,7 @@ var dragTaskHandler = function (event) {
     event.dataTransfer.setData("text/plain", taskId);
 
     var getId = event.dataTransfer.getData("text/plain");
-    console.log("getId:", getId, typeof getId);
+    // console.log("getId:", getId, typeof getId);
 };
 
 // function defining drop zone
@@ -302,7 +302,7 @@ var dropTaskHandler = function (event) {
     // calls the saveTasks function to store the tasks array to local storage
     saveTasks();
 
-    console.log(tasks);
+    // console.log(tasks);
 
 };
 
@@ -319,6 +319,60 @@ var saveTasks = function () {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 
 };
+
+var loadTasks = function () {
+
+    // get task items from local storage
+    var savedTasks = localStorage.getItem("tasks");
+    // console.log(tasks);
+
+    if (!savedTasks) {
+        return false;
+    };
+
+    // convert tasks from strigified format back into an array of objects
+    savedTasks = JSON.parse(savedTasks);
+
+    // loop through savedTasks array
+    for (var i = 0; i < savedTasks.length; i++) {
+        // pass each task object into the `createTaskEl()` function
+        createTaskEl(savedTasks[i]);
+    }
+}
+
+// // console.log(tasks);
+
+// // iterates though tasks array and creates task elements on the page from it
+// for (var i = 0; i < tasks.length; i++) {
+//     // console.log(tasks[i]);
+// };
+
+// tasks.id = taskIdCounter;
+// // console.log(tasks);
+
+// // create list item
+// var listItemEl = document.createElement("li");
+// listItemEl.className = "task-item";
+
+// // add task id as a custom attriute (and set value to taskIdCounter (which starts at 0))
+// listItemEl.setAttribute("data-task-id", tasks.id);
+// listItemEl.setAttribute("draggable", "true");
+// // console.log(listItemEL);
+
+// // create div to hold task info and add to list item
+// var taskInfoEl = document.createElement("div");
+// taskInfoEl.className = "task-info";
+// taskInfoEl.innerHTML = "<h3 class='task-name'>" + tasks[i].name + "</h3><span class='task-type'>" + tasks[i].type + "</span>";
+// listItemEl.appendChild(taskInfoEl);
+
+// var taskActionsEl = createTaskActions(taskIdCounter);
+// listItemEl.appendChild(taskActionsEl);
+// console.log(listItemEl);
+
+// tasksToDoEl.appendChild(listItemEl);
+
+
+// };
 
 
 
@@ -337,3 +391,6 @@ pageContentEl.addEventListener("drop", dropTaskHandler);
 // listening for drag leave event, calls dragLeaveHandler to remove hovered style
 pageContentEl.addEventListener("dragleave", dragLeaveHandler);
 
+
+//test call area
+loadTasks()
